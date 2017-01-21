@@ -27,13 +27,13 @@ create table `phistory`(
 	`project` VARCHAR (35),
 	`task` VARCHAR (35),
 	`platform` VARCHAR (35),
-	`duration` VARCHAR (35),
-	`successrate` VARCHAR (35),
+	`duration` INT,
+	`successrate` INT,
 	`developername` VARCHAR (35)
 );
 
 INSERT INTO `phistory`(project,task,platform,duration,successrate,developername)
 VALUES
-('ABC','User Creation','Java','36hrs 12mins', '60%','a1'),
-('EFG','UI Development','Bootstrap','4hrs 8 min','80%', 'b1'),
-('XYZ','User Creation','Java','32hrs 10mins', '75%', 'C1')
+('ABC','User Creation','Java','36', '60','a1'),
+('EFG','UI Development','Bootstrap','4','80', 'b1'),
+('XYZ','User Creation','Java','32', '75', 'C1')

@@ -108,7 +108,6 @@
 </body>
 </html>
 
-
 <?php
 //Adding data to database
 function load_data(){

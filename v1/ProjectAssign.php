@@ -10,7 +10,7 @@
 </head>
 <body>
 
-\<nav class="navbar navbar-inverse">
+<nav class="navbar navbar-inverse">
     <div class="container-fluid">
         <div class="navbar-header">
         </div>
@@ -48,7 +48,7 @@
         </center>
     </div>
     <div class="col-xs-6">
-        <div class="well">
+        <!-- <div class="well">
 
             <div class="form-group">
                 <label for="Project Type" class="control-label">Type</label>
@@ -106,9 +106,99 @@
                 </div>
                 <span class="help-block"></span>
             </div>
-        </div>
+        </div> -->
+        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+            <div>
+                Type: <input type="text" name="type">       
+            </div>  
+            <div>
+                Duration: <input type="text" name="duration">      
+            </div>
+            <input type="submit" name="submit" value="Submit">  
+        </form>
     </div>
 </div>
 </body>
 
+<?php
 
+//Post Request sent from form
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //Accesses the name that was added in the form
+
+    load_data($_POST["type"] , $_POST["duration"]);
+}
+
+
+//Adding data to database
+function load_data($type , $duration){
+    $con = create_DB_connection();
+    if($con){
+        $sql = prepare_add_query($type , $duration);
+        $message = execute_query($con , $sql);
+        echo $message;
+    }
+}
+
+//Creating the database connection
+function create_DB_connection(){
+    $newconnection = new mysqli("localhost:3306", "root" , "", "infotect");
+    return $newconnection;
+}
+
+//Preparing the query to add data to database
+function prepare_add_query($type , $duration){
+    $append = "";
+    $count = 0;
+    if($type != "" || $duration != ""){
+        $append = " where";
+    }
+
+    if($type != ""){
+        $append = $append." platform LIKE '%".$type."%' ";
+        $count = 1;
+    }
+    
+    if($duration != ""){
+        if($count == 1){
+            $append = $append." and ";
+        }
+        $append = $append." duration <= ".$duration." ";
+    }
+    
+    $sql = "SELECT * from phistory".$append." ORDER BY duration asc";
+    return $sql;
+}
+
+
+//Executing Query to add data to database
+function execute_query($connection , $sql){
+    $result = $connection->query($sql);
+    if($result){
+        if ($result->num_rows > 0) {
+            // output data of each row
+            echo "<table id='myTable'>
+                    <tr class='header'>
+                    <th style='width:40%;'>Name</th>
+                    <th style='width:20%;'>Platform</th>
+                    <th style='width:20%;'>Duration</th>
+                    <th style='width:20%;'>Success rate</th>
+                    </tr>";
+
+            while($row = $result->fetch_assoc()) {
+                echo "<tr>
+                <td>".$row["developername"]."</td>
+                <td>".$row["platform"]."</td>
+                <td>".$row["duration"]."</td>
+                <td>".$row["successrate"]."</td>
+                </tr>";
+            }
+
+            echo "</table>";
+        }
+    }
+    else {
+        echo "No result Found";
+    }
+}
+?>
