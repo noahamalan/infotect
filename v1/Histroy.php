@@ -56,24 +56,7 @@
             </thead>
             <tbody>
             <tr>
-            <tr class="danger">
-                <td>1</td>
-                <td>ABC</td>
-                <td>User Creation</td>
-                <td>Java</td>
-                <td>36hrs 12min</td>
-                <td>60%</td>
-            </tr>
-
-            <tr>
-            <tr class="info">
-                <td>2</td>
-                <td>XYZ</td>
-                <td>system Entry</td>
-                <td>SQL</td>
-                <td>72hrs 18 min</td>
-                <td>27%</td>
-            </tr>
+            <?php load_data(null); ?>
             </tbody>
         </table>
     </div>
@@ -97,27 +80,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-            <tr class="danger">
-                <td>1</td>
-                <td><p><a href="profile.php">a1</a></td>
-                <td><p><a href="projectAssign.php">ABC</a></td>
-                <td>User Creation</td>
-                <td>Java</td>
-                <td>36hrs 12min</td>
-                <td>60%</td>
-            </tr>
-
-            <tr>
-            <tr class="info">
-                <td>2</td>
-                <td>a2</td>
-                <td>XYZ</td>
-                <td>User Creation</td>
-                <td>Java</td>
-                <td>72hrs 18 min</td>
-                <td>27%</td>
-            </tr>
+            <?php load_data("admin"); ?>
             </tbody>
         </table>
     </div>
@@ -143,7 +106,65 @@
 </body>
 </html>
 
+<?php
+//Adding data to database
+function load_data($key){
+    $con = create_DB_connection();
+    if($con){
+        $sql = prepare_add_query();
+        $message = execute_query($con , $sql , $key);
+        echo $message;
+    }
+}
 
+//Creating the database connection
+function create_DB_connection(){
+    $newconnection = new mysqli("localhost:3306", "root" , "", "infotect");
+    return $newconnection;
+}
 
+//Preparing the query to add data to database
+function prepare_add_query(){
+    $sql = "SELECT * from phistory";
+    return $sql;
+}
 
-
+//Executing Query to add data to database
+function execute_query($connection , $sql , $key){
+    $result = $connection->query($sql);
+    if ($result->num_rows > 0) {
+        // output data of each row
+        if($key== null){
+            $count = 1;
+            while($row = $result->fetch_assoc()) {
+                echo "<tr>
+                <td>".$count."</td>
+                <td>".$row["project"]."</td>
+                <td>".$row["task"]."</td>
+                <td>".$row["platform"]."</td>
+                <td>".$row["duration"]."</td>
+                <td>".$row["successrate"]."</td>
+                </tr>";
+                $count = $count + 1;
+            }
+        }
+        else{
+            while($row = $result->fetch_assoc()) {
+                $count = 1;
+                echo "<tr>
+                <td>".$count."</td>
+                <td>".$row["project"]."</td>
+                <td>".$row["task"]."</td>
+                <td>".$row["platform"]."</td>
+                <td>".$row["duration"]."</td>
+                <td>".$row["successrate"]."</td>
+                <td>".$row["developername"]."</td>
+                </tr>";
+                $count = $count + 1;
+            }
+        }
+    } else {
+        echo "Invalid login";
+    }
+}
+?>

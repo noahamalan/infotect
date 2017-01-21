@@ -110,12 +110,6 @@
 
 
 <?php
-//Post Request sent from form
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //Accesses the name that was added in the form
-    load_data();
-}
-
 //Adding data to database
 function load_data(){
     $con = create_DB_connection();

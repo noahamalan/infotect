@@ -21,3 +21,19 @@ VALUES
 ('Alfreds Futterkiste','Java','2','1994'),
 ('Berglunds snabbkop','SQL','5','2015'),
 ('Island Trading','UK','2','2015');
+
+create table `phistory`(
+	`rid` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`project` VARCHAR (35),
+	`task` VARCHAR (35),
+	`platform` VARCHAR (35),
+	`duration` VARCHAR (35),
+	`successrate` VARCHAR (35),
+	`developername` VARCHAR (35)
+);
+
+INSERT INTO `phistory`(project,task,platform,duration,successrate,developername)
+VALUES
+('ABC','User Creation','Java','36hrs 12mins', '60%','a1'),
+('EFG','UI Development','Bootstrap','4hrs 8 min','80%', 'b1'),
+('XYZ','User Creation','Java','32hrs 10mins', '75%', 'C1')
