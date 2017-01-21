@@ -3,7 +3,21 @@ CREATE DATABASE infotect;
 
 -- Exsisting data table
 CREATE TABLE `user` (
-  `username` VARCHAR (20) NOT NULL PRIMARY KEY,
-  `password` VARCHAR (20) NOT NULL,
-  `type` VARCHAR (20)
+  `username` VARCHAR (35) NOT NULL PRIMARY KEY,
+  `password` VARCHAR (35) NOT NULL,
+  `type` VARCHAR (35)
 );
+
+create table `developers`(
+	`did` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	`Name` VARCHAR (35),
+	`Language` VARCHAR (35),
+	`YearOfwork` VARCHAR (35),
+	`lastProject` VARCHAR (35)
+);
+
+INSERT INTO `developers`(Name,Language,YearOfwork,lastProject)
+VALUES 
+('Alfreds Futterkiste','Java','2','1994'),
+('Berglunds snabbkop','SQL','5','2015'),
+('Island Trading','UK','2','2015');

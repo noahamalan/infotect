@@ -82,63 +82,7 @@
         <th style="width:20%;">Year Of work</th>
         <th style="width:20%;">last Project</th>
     </tr>
-    <tr>
-        <td>Alfreds Futterkiste</td>
-        <td>Java</td>
-        <td>2</td>
-        <td>ABC</td>
-    </tr>
-    <tr>
-        <td>Berglunds snabbkop</td>
-        <td>SQL</td>
-        <td>5</td>
-        <td>XYZ</td>
-    </tr>
-    <tr>
-        <td>Island Trading</td>
-        <td>UK</td>
-        <td>2</td>
-        <td>ABC</td>
-    </tr>
-    <tr>
-        <td>Koniglich Essen</td>
-        <td>Germany</td>
-        <td>2</td>
-        <td>ABC</td>
-    </tr>
-    <tr>
-        <td>Laughing Bacchus Winecellars</td>
-        <td>Canada</td>
-        <td>2</td>
-        <td>ABC</td>
-
-    </tr>
-    <tr>
-        <td>Magazzini Alimentari Riuniti</td>
-        <td>Italy</td>
-        <td>5</td>
-        <td>XYZ</td>
-    </tr>
-    <tr>
-        <td>North/South</td>
-        <td>UK</td>
-        <td>5</td>
-        <td>XYZ</td>
-
-    </tr>
-    <tr>
-        <td>Paris specialites</td>
-        <td>France</td>
-        <td>5</td>
-        <td>XYZ</td>
-    </tr>
-
-    <tr>
-        <td>Imran Rahuman</td>
-        <td>France</td>
-        <td>5</td>
-        <td>XYZ</td>
-    </tr>
+    <?php load_data(); ?>
 </table>
 
 <script>
@@ -163,3 +107,53 @@
 
 </body>
 </html>
+
+
+<?php
+//Post Request sent from form
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    //Accesses the name that was added in the form
+    load_data();
+}
+
+//Adding data to database
+function load_data(){
+    $con = create_DB_connection();
+    if($con){
+        $sql = prepare_add_query();
+        $message = execute_query($con , $sql);
+        echo $message;
+    }
+}
+
+//Creating the database connection
+function create_DB_connection(){
+    $newconnection = new mysqli("localhost:3306", "root" , "", "infotect");
+    return $newconnection;
+}
+
+//Preparing the query to add data to database
+function prepare_add_query(){
+    $sql = "SELECT * from developers";
+    return $sql;
+}
+
+
+//Executing Query to add data to database
+function execute_query($connection , $sql){
+    $result = $connection->query($sql);
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            echo "<tr>
+            <td>".$row["Name"]."</td>
+            <td>".$row["Language"]."</td>
+            <td>".$row["YearOfwork"]."</td>
+            <td>".$row["lastProject"]."</td>
+            </tr>";
+        }
+    } else {
+        echo "Invalid login";
+    }
+}
+?>
